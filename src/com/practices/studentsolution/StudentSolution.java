@@ -17,19 +17,38 @@ import java.util.logging.Logger;
  */
 public class StudentSolution {
 
-    private final static Logger LOGGER = Logger.getLogger(StudentSolution.class.getName());
-    public final static String INPUT_FILE_NAME = "input.csv";
+    public final static Logger LOGGER = Logger.getLogger(StudentSolution.class.getName());
+    public final static String INPUT_NAME = "name";
+    public final static String EQUAL_SIMBOL = "=";
+    public final static Character GENDER_FEMALE = 'F';
+    public final static Character GENDER_MALE = 'M';
+
+    List<Student> students;
 
     public static void main(String[] args) throws IOException {
         LOGGER.info("loading student from csv file...");
         StudentSolution studentSolution = new StudentSolution();
-        List<Student> students = studentSolution.loadStudents();
-        studentSolution.findStudentsByGender(students, 'F');
+        studentSolution.students = studentSolution.loadStudents(args[0]);
+
+        int index = args[1].indexOf(EQUAL_SIMBOL);
+        String argName = args[1].substring(0, index);
+        String argValue = args[1].substring(index+1);
+
+        if (args.length < 3) {
+            if(argName.equals(INPUT_NAME)){
+                studentSolution.fingStudentByName(argValue);
+            } else {
+                studentSolution.findStudentsByType(argValue);
+            }
+        }else {
+            studentSolution.findStudentsByTypeAndGender(argValue, args[2].charAt(0) == 'f'?GENDER_FEMALE:GENDER_MALE);
+        }
+
         LOGGER.info("students loaded");
     }
 
-    private List<Student> loadStudents() throws IOException {
-        File file = new File(getClass().getResource(INPUT_FILE_NAME).getFile());
+    private List<Student> loadStudents(String fileName) throws IOException {
+        File file = new File(getClass().getResource(fileName).getFile());
         List<Student> students;
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             students = loadStudents(new InputStreamReader(fileInputStream));
@@ -60,11 +79,11 @@ public class StudentSolution {
     }
 
     // find student or students by name
-    public void fingStudentByName(List<Student> students, String name) {
+    public void fingStudentByName(String name) {
         final List<Student> studentsFinged = new ArrayList<>();
 
         for (Student student : students) {
-            if(student.getName().equals(name)) {
+            if(student.getName().equalsIgnoreCase(name)) {
                 studentsFinged.add(student);
             }
         }
@@ -76,7 +95,7 @@ public class StudentSolution {
         }
     }
 
-    public void findStudentsByType(List<Student> students, String type) {
+    public void findStudentsByType(String type) {
         final List<Student> studentsFinged = new ArrayList<>();
 
         for (Student student : students) {
@@ -92,11 +111,11 @@ public class StudentSolution {
         }
     }
 
-    public void findStudentsByGender(List<Student> students, Character gender) {
+    public void findStudentsByTypeAndGender(String type, Character gender) {
         final List<Student> studentsFinged = new ArrayList<>();
 
         for (Student student : students) {
-            if(student.getGender() == gender) {
+            if(student.getType().equalsIgnoreCase(type) && student.getGender() == gender) {
                 studentsFinged.add(student);
             }
         }
