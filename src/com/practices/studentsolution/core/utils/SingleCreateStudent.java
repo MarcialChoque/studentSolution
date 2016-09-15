@@ -2,6 +2,9 @@ package com.practices.studentsolution.core.utils;
 
 import com.practices.studentsolution.core.entities.Student;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -35,7 +38,7 @@ public class SingleCreateStudent {
             else if (index == 1)
                 student.setName(data);
             else if (index == 2)
-                student.setGender(data);
+                student.setGender(data.charAt(0));
             else if (index == 3)
                 student.setUpdated(DateUtil.getDateYyyyMMddHHmmssFormat(data));
             else
