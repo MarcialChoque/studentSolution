@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class StudentSolution {
 
     private final static Logger LOGGER = Logger.getLogger(StudentSolution.class.getName());
-    //private static final ClassLoader loader = StudentSolution.class.getClassLoader();
+    public final static String INPUT_FILE_NAME = "input.csv";
 
     public static void main(String[] args) throws IOException {
         LOGGER.info("loading student from csv file...");
@@ -28,8 +28,8 @@ public class StudentSolution {
         LOGGER.info("students loaded");
     }
 
-    public List<Student> loadStudents() throws IOException {
-        File file = new File(getClass().getResource("input.csv").getFile());
+    private List<Student> loadStudents() throws IOException {
+        File file = new File(getClass().getResource(INPUT_FILE_NAME).getFile());
         List<Student> students;
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             students = loadStudents(new InputStreamReader(fileInputStream));
@@ -38,7 +38,6 @@ public class StudentSolution {
     }
 
     public List<Student> loadStudents(Reader r) throws IOException {
-        //BufferedReader reader = new BufferedReader(new FileReader("/Users/andresmerida/dev/input.csv"));
         List<Student> studentList = new ArrayList<>();
         BufferedReader reader = new BufferedReader(r);
 
