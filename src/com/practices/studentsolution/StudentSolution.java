@@ -99,12 +99,13 @@ public class StudentSolution {
         final List<Student> studentsFinged = new ArrayList<>();
 
         for (Student student : students) {
-            if(student.getType().equals(type)) {
+            if(student.getType().equalsIgnoreCase(type)) {
                 studentsFinged.add(student);
             }
         }
 
         if (studentsFinged.size() > 0 ) {
+            Collections.sort(studentsFinged, Collections.reverseOrder());
             this.showStudents(studentsFinged.iterator());
         } else {
             System.out.println("There aro not students with type = "+type);
